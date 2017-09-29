@@ -6,8 +6,8 @@ import random
 import time 
 
 # config
-low = 1
-high = 100
+default_low = 1
+deafault_high = 100
 
 
 # helper functions
@@ -25,6 +25,8 @@ def show_start_screen():
     
 def show_credits():
     time.sleep(1)
+    print()
+    time.sleep(.5)
     print ("Thank you for playing this gnarly game")
     time.sleep(.5)
     print ("      This game was produced by       ")
@@ -38,6 +40,24 @@ def get_guess(current_low, current_high):
    guess = ( current_high + current_low)//2
    return guess
 
+def decide_number():
+    print()
+    decide_1 = input ("Would you like to pick numbers for your game?")
+    decide_1 = decide_1.lower()
+    if decide_1 in ["yes","y"]:
+        print()
+        low = input ("What would you like your low value to be?")
+        low = int(low)
+        print()
+        high = input ("What would you like your high value to be?")
+        high = int(high)
+        return low,high
+    else:
+        print ("Okay default values will be used.")
+        low = default_low
+        high = default_high
+
+    
 def pick_number():
     print ()
     print ("Please think of a number between " + str(low) + " and " + str(high) + ".")
@@ -50,21 +70,22 @@ def check_guess(guess):
     print (str(guess) + "?")
     test = input("Please tell me if my number is too high, too low, or if I guessed correct say yes ")
     test = test.lower()
-    if "low" in test:
+    if test in ["low","l"]:
         check = 1
         return check
-    if "high" in test:
+    if test in ["high","h"]:
         check = -1
         return check
-    if "yes" in test:
+    if test in ["yes","y"]:
         check = 0
         return check
-    if "stop" in test:
+    if test in ["stop","quit"]:
         print()
         escape = input("Would you like to stop playing now? ")
-        if "yes" in escape:
+        escape = escape.lower()
+        if escape in ["yes","y"]:
             quit()
-        if "no" in escape:
+        if escape in ["no","n"]:
             print ("Okay.")
         else:
             print ("The game will continue now")  
@@ -91,10 +112,10 @@ def play_again():
             print("I don't understand. Please enter 'y' or 'n'.")
 
 def play():
-    current_low = low
-    current_high = high
-    check = -1
     
+    current_low,current_high = decide_number()
+    check = -1
+
     pick_number()
     
     while check != 0:
