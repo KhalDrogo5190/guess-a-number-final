@@ -7,7 +7,8 @@ import time
 
 # config
 default_low = 1
-deafault_high = 100
+default_high = 100
+tries = 1
 
 
 # helper functions
@@ -34,13 +35,15 @@ def show_credits():
     print ("   Dwight Schrute's Gym For Muscles   ")
     time.sleep(.5)
     print ("          and coded by Anders         ")
+    time.sleep(10)
+    quit()
     
     
 def get_guess(current_low, current_high):
    guess = ( current_high + current_low)//2
    return guess
 
-def decide_number():
+def decide_number(default_low, default_high):
     print()
     decide_1 = input ("Would you like to pick numbers for your game?")
     decide_1 = decide_1.lower()
@@ -56,11 +59,13 @@ def decide_number():
         print ("Okay default values will be used.")
         low = default_low
         high = default_high
+        return low,high
+    
 
     
-def pick_number():
+def pick_number(current_low,current_high):
     print ()
-    print ("Please think of a number between " + str(low) + " and " + str(high) + ".")
+    print ("Please think of a number between " + str(current_low) + " and " + str(current_high) + ".")
     time.sleep(.5)
     useless_1 = input("Press 'enter' when ready.")
     
@@ -72,9 +77,11 @@ def check_guess(guess):
     test = test.lower()
     if test in ["low","l"]:
         check = 1
+        tries = +1
         return check
     if test in ["high","h"]:
         check = -1
+        tries = +1
         return check
     if test in ["yes","y"]:
         check = 0
@@ -96,6 +103,8 @@ def show_result(guess):
     print ()
     print ("I knew it was " + str(guess) + " from the beggining.")
     print ()
+    print ("I guessed your number in only " + str(tries) + " tries.")
+    print ()
     print ("I always win! Haha!")
 
 def play_again():
@@ -113,10 +122,10 @@ def play_again():
 
 def play():
     
-    current_low,current_high = decide_number()
+    current_low,current_high = decide_number(default_low,default_high)
     check = -1
 
-    pick_number()
+    pick_number(current_low, current_high)
     
     while check != 0:
         guess = get_guess(current_low, current_high)
