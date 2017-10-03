@@ -3,12 +3,15 @@
 # Anders B
 
 import random
-import time 
+import time
+import math
+
 
 # config
 default_low = 1
 default_high = 100
 tries = 1
+
 
 
 # helper functions
@@ -38,6 +41,9 @@ def show_credits():
     time.sleep(10)
     quit()
     
+def find_limit(current_high, current_low):
+    limit = math.ceil(math.log((current_high - current_low) + 1, 2))
+    return limit
     
 def get_guess(current_low, current_high):
    guess = ( current_high + current_low)//2
@@ -69,20 +75,22 @@ def pick_number(current_low,current_high):
     time.sleep(.5)
     useless_1 = input("Press 'enter' when ready.")
     
-def check_guess(guess):
+def check_guess(guess,tries,limit):
+    
     print()
     time.sleep(.5)
     print (str(guess) + "?")
+    print ("This is guess " + str(tries) + "/" + str(limit) + " ")
     test = input("Please tell me if my number is too high, too low, or if I guessed correct say yes ")
     test = test.lower()
     if test in ["low","l"]:
         check = 1
-        tries = +1
-        return check
+        tries += 1
+        return check,tries,limit
     if test in ["high","h"]:
         check = -1
-        tries = +1
-        return check
+        tries += 1
+        return check,tries,limit
     if test in ["yes","y"]:
         check = 0
         return check
@@ -99,11 +107,11 @@ def check_guess(guess):
     else:
         print ("Please say something intelligent.")
      
-def show_result(guess):
+def show_result(guess,tries,limit):
     print ()
     print ("I knew it was " + str(guess) + " from the beggining.")
     print ()
-    print ("I guessed your number in only " + str(tries) + " tries.")
+    print ("I guessed your number in only " + str(tries) + "/" + str(limit) + " tries.")
     print ()
     print ("I always win! Haha!")
 
@@ -120,16 +128,16 @@ def play_again():
         else:
             print("I don't understand. Please enter 'y' or 'n'.")
 
-def play():
+def play(tries):
     
     current_low,current_high = decide_number(default_low,default_high)
     check = -1
-
+    limit = find_limit(current_high, current_low)
     pick_number(current_low, current_high)
     
     while check != 0:
         guess = get_guess(current_low, current_high)
-        check = check_guess(guess)
+        check,tries,limit = check_guess(guess,tries,limit)
 
         if check == -1:
             current_high = guess
@@ -137,7 +145,7 @@ def play():
            current_low = guess 
            
 
-    show_result(guess)
+    show_result(guess,tries,limit)
 
 
 # Game starts running here
@@ -146,7 +154,7 @@ show_start_screen()
 playing = True
 
 while playing:
-    play()
+    play(tries)
     playing = play_again()
 
 show_credits()
