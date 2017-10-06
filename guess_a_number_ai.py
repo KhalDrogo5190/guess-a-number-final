@@ -10,7 +10,7 @@ import math
 # config
 default_low = 1
 default_high = 100
-tries = 1
+
 
 
 
@@ -29,7 +29,8 @@ def show_start_screen():
     
 def show_credits(name):
     time.sleep(1)
-    print("Thank you for playing " + name + ".")
+    print()
+    print("     Thank you for playing " + name + " ")
     time.sleep(.5)
     print ("Thank you for playing this gnarly game")
     time.sleep(.5)
@@ -81,13 +82,14 @@ def check_guess(name,guess,tries,limit):
     
     print()
     time.sleep(.5)
-    print (str(guess) + "?")
     print ("I have guessed " + str(tries) + "/" + str(limit) + " times")
+    time.sleep(.5)
+    print (str(guess) + "?")
     test = input(name + ", please tell me if my number is too high, too low, or if I guessed correct say yes ")
     test = test.lower()
-    if test in ["low","l"]:
+    if test in ["low","l","too low","too low "]:
         return 1
-    if test in ["high","h"]:
+    if test in ["high","h","too high","too high "]:
         return -1
         return check,tries
     if test in ["yes","y"]:
@@ -98,7 +100,7 @@ def check_guess(name,guess,tries,limit):
      
 def show_result(name,guess,tries,limit):
     print ()
-    print ("Ahaha " + name + ",I knew it was " + str(guess) + " from the beggining.")
+    print ("Ahaha " + name + ",I knew it was " + str(guess) + " from the beginning.")
     print ()
     print ("I guessed your number in only " + str(tries) + "/" + str(limit) + " tries.")
     print ()
@@ -117,7 +119,7 @@ def play_again(name):
         else:
             print("I don't understand. Please enter 'y' or 'n'.")
 
-def play(name,tries):
+def play(name):
     
     current_low,current_high = decide_number(name,default_low,default_high)
     check = -1
@@ -145,7 +147,7 @@ name = get_name()
 playing = True
 
 while playing:
-    play(name,tries)
+    play(name)
     playing = play_again(name)
 
-show_credits()
+show_credits(name)
